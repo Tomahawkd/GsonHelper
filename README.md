@@ -1,11 +1,11 @@
 # GsonHelper
 helper class for [gson](https://github.com/google/gson)
 
-## Development Custom Message
+## Develop Custom Message
 Since I made full use of java's reflection technique, now building a custom message is much easier.
 
-### How to build
-What to do is just focus on your message content.
+### How to use
+Just focus on your message content.
 
 Example can be found [here](https://github.com/Tomahawkd/GsonHelper/blob/master/src/main/java/io/tomahawkd/gson/ExampleMessage.java)
 
@@ -24,7 +24,7 @@ public class YourMessage extends AbstractMessage {
 }
 ```
 
-### About custom Serializer/Deserializer/TypeAdapter
+### About Custom Serializer/Deserializer/TypeAdapter
 
 Just add one line for registration
 
