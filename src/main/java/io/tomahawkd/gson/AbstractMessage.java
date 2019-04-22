@@ -30,6 +30,10 @@ public abstract class AbstractMessage implements Message {
 	GsonBuilder register(GsonBuilder builder) {
 		Field[] fields = this.getClass().getFields();
 		for (Field field : fields) {
+
+			// Ignore transient marked field
+			if (Modifier.isTransient(field.getModifiers())) continue;
+
 			Class type = field.getType();
 
 			// when we are meeting a Message class or subclass, we shall register its field
