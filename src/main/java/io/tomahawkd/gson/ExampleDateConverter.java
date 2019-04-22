@@ -1,7 +1,6 @@
 package io.tomahawkd.gson;
 
 import com.google.gson.*;
-import io.tomahawkd.gson.util.TypeAdapterRegister;
 
 import java.lang.reflect.Type;
 import java.text.DateFormat;
@@ -11,17 +10,13 @@ import java.util.Date;
 
 public class ExampleDateConverter implements JsonSerializer<Date>, JsonDeserializer<Date> {
 
-	static {
-		TypeAdapterRegister.getInstance().register(Date.class, new ExampleDateConverter());
-	}
-
 	@Override
 	public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String date = json.getAsString().replace("\"", "");
 		try {
-			return formatter.parse(json.getAsString());
+			return formatter.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;

@@ -30,11 +30,6 @@ public class ErrorMessage extends AbstractMessage {
 	}
 
 	@Override
-	GsonBuilder register(GsonBuilder builder) {
-		return builder;
-	}
-
-	@Override
 	public String toString() {
 		return "ErrorMessage{" +
 				"errorCode=" + errorCode +

@@ -44,20 +44,19 @@ if (response.isError()) {
 
 ### About Custom Serializer/Deserializer/TypeAdapter
 
-Just add one line for registration
+Just add one line for registration using annotation `@JsonAdapter`
 
 Example can be found [here](https://github.com/Tomahawkd/GsonHelper/blob/master/src/main/java/io/tomahawkd/gson/ExampleDateConverter.java)
 
-```java
-public class DateSerializer implements JsonSerializer<Date> {
-	
-	static {
-		TypeAdapterRegister.getInstance().register(Date.class, new DateSerializer());
-	}
-	
-	@Override
-    public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-		return context.serialize(src.toString());
-	}
+```
+
+// Use at field level
+@JsonAdapter(YourClassAdapter.class)
+private Class yourclass;
+
+// Use at class level
+@JsonAdapter(YourClassAdapter.class)
+public class YourClass {
+
 }
 ```
