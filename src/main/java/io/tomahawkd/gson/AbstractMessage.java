@@ -12,7 +12,7 @@ public abstract class AbstractMessage implements Message {
 	// transient is marked for gson parser for not building this field into json
 	private transient GsonBuilder builder;
 
-	AbstractMessage() {
+	protected AbstractMessage() {
 		this.builder = register(new GsonBuilder());
 	}
 
