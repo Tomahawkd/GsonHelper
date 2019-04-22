@@ -5,27 +5,42 @@ import io.tomahawkd.gson.util.TypeAdapterRegister;
 import org.jetbrains.annotations.Contract;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public abstract class AbstractMessage implements Message {
 
-	private transient GsonBuilder builder = new GsonBuilder();
+	// transient is marked for gson parser for not building this field into json
+	private transient GsonBuilder builder;
+
+	AbstractMessage() {
+		this.builder = register(new GsonBuilder());
+	}
 
 	public Message parse(String data) {
-		register(builder);
 		return builder.create().fromJson(data, this.getClass());
 	}
 
+	/**
+	 * Register custom type adapter/serializer/deserializer if necessary
+	 *
+	 * @param builder gson builder for registration
+	 * @return gson builder
+	 */
 	@Contract("_ -> param1")
-	public GsonBuilder register(GsonBuilder builder) {
+	GsonBuilder register(GsonBuilder builder) {
 		Field[] fields = this.getClass().getFields();
 		for (Field field : fields) {
 			Class type = field.getType();
-			if (Message.class.isAssignableFrom(type)) {
+
+			// when we are meeting a Message class or subclass, we shall register its field
+			if (AbstractMessage.class.isAssignableFrom(type)) {
 				try {
-					((Message) field.getType().newInstance()).register(builder);
+					((AbstractMessage) field.getType().newInstance()).register(builder);
 				} catch (InstantiationException | IllegalAccessException e) {
 					e.printStackTrace();
 				}
+
+				// look up for registered class in register
 			} else if (TypeAdapterRegister.getInstance().isRegistered(type)) {
 				TypeAdapterRegister.getInstance().registerToBuilder(builder, type);
 			}
@@ -36,7 +51,7 @@ public abstract class AbstractMessage implements Message {
 
 	@Override
 	public String buildJson() {
-		return register(new GsonBuilder()).create().toJson(this);
+		return builder.create().toJson(this);
 	}
 
 	@Override
